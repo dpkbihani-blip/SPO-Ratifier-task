@@ -4,4 +4,16 @@ DAY 1
 03-06-2026
 Initialized the project.
 Set up post gresql
-test run: database and backend talking SUCESS
+test run: database and backend talking SUCCESS
+
+DAY 2
+04-06-2026
+Set up the signup auth backend.
+
+DAY 3
+05-06-2026
+frontend project files created
+signup frontend raw page done.
+first end to end feature finished :) 
+login and signup functionality done
+Project is starting to resemble a website :)

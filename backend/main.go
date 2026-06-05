@@ -30,17 +30,42 @@ func main() {
 	handler := auth.Handler{
 		Service: &service,	
 	}
-	http.HandleFunc("/signup", handler.Signup)
 
 	fmt.Println("Server listening on :8080")
 	fmt.Println("Backend started")
 
-	err = http.ListenAndServe(":8080", nil)
-	http.HandleFunc("/signup", handler.Signup)
-	http.HandleFunc("/login", handler.Login)
+	
+	http.HandleFunc("/signup", func(w http.ResponseWriter, r *http.Request) {
+
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
+
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+
+		handler.Signup(w, r)
+	})
+	
+	http.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
+
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+	w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
+
+	if r.Method == "OPTIONS" {
+		w.WriteHeader(http.StatusOK)
+		return
+	}
+
+	handler.Login(w, r)
+})
 	if err != nil {
 		panic(err)
 	}
+	err = http.ListenAndServe(":8080", nil)
 	defer db.Close()
 
 	

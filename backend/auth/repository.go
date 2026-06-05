@@ -27,3 +27,27 @@ func (r *Repository) CreateUser(user User) error {
 
 	return err
 }
+
+func (r *Repository) GetUserByEmail(email string) (User, error) {
+
+	var user User
+
+	err := r.DB.QueryRow(`
+		SELECT
+			id,
+			name,
+			email,
+			password_hash,
+			role
+		FROM users
+		WHERE email = $1
+	`, email).Scan(
+		&user.ID,
+		&user.Name,
+		&user.Email,
+		&user.PasswordHash,
+		&user.Role,
+	)
+
+	return user, err
+}
