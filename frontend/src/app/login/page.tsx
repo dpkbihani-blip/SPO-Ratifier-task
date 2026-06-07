@@ -3,59 +3,78 @@
 import { useState } from "react";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+const [email, setEmail] = useState("");
+const [password, setPassword] = useState("");
 
-  async function login() {
-    const response = await fetch(
-      "http://localhost:8080/login",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-      }
-    );
+const API_URL =
+process.env.NEXT_PUBLIC_API_URL ||
+"http://localhost:8080";
 
-    const data = await response.json();
+async function login() {
+try {
+const response = await fetch(
+`${API_URL}/login`,
+{
+method: "POST",
+headers: {
+"Content-Type":
+"application/json",
+},
+body: JSON.stringify({
+email,
+password,
+}),
+}
+);
 
-    alert(data.message);
+  const data =
+    await response.json();
 
-    if (response.ok) {
-      window.location.href = "/student";
-    }
+  alert(data.message);
+
+  if (response.ok) {
+    window.location.href =
+      "/student";
   }
+} catch (err) {
+  console.error(err);
 
-  return (
-    <div>
-      <h1>Login</h1>
-
-      <input
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-
-      <br />
-      <br />
-
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-
-      <br />
-      <br />
-
-      <button onClick={login}>
-        Login
-      </button>
-    </div>
+  alert(
+    "Unable to connect to server"
   );
+}
+
+}
+
+return ( <div> <h1>Login</h1>
+
+  <input
+    placeholder="Email"
+    value={email}
+    onChange={(e) =>
+      setEmail(e.target.value)
+    }
+  />
+
+  <br />
+  <br />
+
+  <input
+    type="password"
+    placeholder="Password"
+    value={password}
+    onChange={(e) =>
+      setPassword(e.target.value)
+    }
+  />
+
+  <br />
+  <br />
+
+  <button onClick={login}>
+    Login
+  </button>
+</div>
+
+);
 }

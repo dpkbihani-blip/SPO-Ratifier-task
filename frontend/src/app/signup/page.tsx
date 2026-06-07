@@ -7,9 +7,13 @@ export default function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const API_URL =
+  process.env.NEXT_PUBLIC_API_URL ||
+  "http://localhost:8080";
+  
   async function signup() {
     const response = await fetch(
-      "http://localhost:8080/signup",
+      `${API_URL}/signup`,
       {
         method: "POST",
         headers: {
