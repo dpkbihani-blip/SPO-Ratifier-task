@@ -53,7 +53,7 @@ func (r *Repository) GetRequestsByDomain(
 		vr.event_date,
 		vr.proof_link,
 		vr.status,
-		vr.remarks,
+		COALESCE(vr.remarks, ''),
 		u.name
 	FROM verification_requests vr
 	JOIN users u
@@ -97,6 +97,9 @@ func (r *Repository) GetRequestsByDomain(
 			req,
 		)
 	}
+	if requests == nil {
+		requests = []DomainRequest{}
+	}
 
 	return requests, nil
 }
@@ -119,4 +122,120 @@ func (r *Repository) UpdateRequestStatus(
 	)
 
 	return err
+}
+
+func (r *Repository) GetAllStudents() (
+	[]Student,
+	error,
+) {
+
+	rows, err := r.DB.Query(`
+		SELECT
+			id,
+			name,
+			email
+		FROM users
+		WHERE role = 'student'
+		ORDER BY id
+	`)
+
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	var students []Student
+
+	for rows.Next() {
+
+		var student Student
+
+		err := rows.Scan(
+			&student.ID,
+			&student.Name,
+			&student.Email,
+		)
+
+		if err != nil {
+			return nil, err
+		}
+
+		students = append(
+			students,
+			student,
+		)
+	}
+
+	if students == nil {
+		students = []Student{}
+	}
+
+	return students, nil
+}
+
+func (r *Repository) GetAllRequests() (
+[]DomainRequest,
+error,
+) {
+
+rows, err := r.DB.Query(`
+SELECT
+	vr.id,
+	vr.student_id,
+	vr.domain_id,
+	vr.title,
+	vr.description,
+	vr.event_date,
+	vr.proof_link,
+	vr.status,
+	COALESCE(vr.remarks, ''),
+	u.name
+FROM verification_requests vr
+JOIN users u
+	ON vr.student_id = u.id
+ORDER BY vr.id DESC
+`)
+
+if err != nil {
+	return nil, err
+}
+
+defer rows.Close()
+
+var requests []DomainRequest
+
+for rows.Next() {
+
+	var req DomainRequest
+
+	err := rows.Scan(
+		&req.ID,
+		&req.StudentID,
+		&req.DomainID,
+		&req.Title,
+		&req.Description,
+		&req.EventDate,
+		&req.ProofLink,
+		&req.Status,
+		&req.Remarks,
+		&req.StudentName,
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	requests = append(
+		requests,
+		req,
+	)
+}
+
+if requests == nil {
+	requests = []DomainRequest{}
+}
+
+return requests, nil
+
 }

@@ -42,3 +42,18 @@ func (s *Service) UpdateRequest(
 		remarks,
 	)
 }
+
+func (s *Service) GetAllStudents() (
+	[]Student,
+	error,
+) {
+
+	return s.Repo.GetAllStudents()
+}
+func (s *Service) GetAllRequests() (
+	[]DomainRequest,
+	error,
+) {
+
+	return s.Repo.GetAllRequests()
+}

@@ -133,3 +133,109 @@ func (h *Handler) UpdateRequest(
 		},
 	)
 }
+func (h *Handler) GetStudents(
+	w http.ResponseWriter,
+	r *http.Request,
+) {
+
+	students, err :=
+		h.Service.GetAllStudents()
+
+	if err != nil {
+
+		http.Error(
+			w,
+			err.Error(),
+			http.StatusInternalServerError,
+		)
+
+		return
+	}
+
+	w.Header().Set(
+		"Content-Type",
+		"application/json",
+	)
+
+	json.NewEncoder(w).Encode(
+		students,
+	)
+}
+func (h *Handler) AssignAdmin(
+	w http.ResponseWriter,
+	r *http.Request,
+) {
+
+	var req AssignAdminRequest
+
+	err := json.NewDecoder(
+		r.Body,
+	).Decode(&req)
+
+	if err != nil {
+
+		http.Error(
+			w,
+			"invalid request body",
+			http.StatusBadRequest,
+		)
+
+		return
+	}
+
+	err = h.Service.AssignDomainAdmin(
+		req.UserID,
+		req.DomainID,
+	)
+
+	if err != nil {
+
+		http.Error(
+			w,
+			err.Error(),
+			http.StatusBadRequest,
+		)
+
+		return
+	}
+
+	w.Header().Set(
+		"Content-Type",
+		"application/json",
+	)
+
+	json.NewEncoder(w).Encode(
+		map[string]string{
+			"message":
+				"domain admin assigned",
+		},
+	)
+}
+func (h *Handler) GetAllRequests(
+	w http.ResponseWriter,
+	r *http.Request,
+) {
+
+	requests, err :=
+		h.Service.GetAllRequests()
+
+	if err != nil {
+
+		http.Error(
+			w,
+			err.Error(),
+			http.StatusInternalServerError,
+		)
+
+		return
+	}
+
+	w.Header().Set(
+		"Content-Type",
+		"application/json",
+	)
+
+	json.NewEncoder(w).Encode(
+		requests,
+	)
+}

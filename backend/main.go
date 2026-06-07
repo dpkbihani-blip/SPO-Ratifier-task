@@ -178,6 +178,28 @@ http.HandleFunc(
 		"PATCH",
 	),
 )
+http.HandleFunc(
+	"/master/students",
+	middleware.WithCORS(
+		adminHandler.GetStudents,
+		"GET",
+	),
+)
+
+http.HandleFunc(
+	"/master/assign-admin",
+	middleware.WithCORS(
+		adminHandler.AssignAdmin,
+		"POST",
+	),
+)
+http.HandleFunc(
+	"/master/requests",
+	middleware.WithCORS(
+		adminHandler.GetAllRequests,
+		"GET",
+	),
+)
 
 port := os.Getenv("PORT")
 if port == "" {

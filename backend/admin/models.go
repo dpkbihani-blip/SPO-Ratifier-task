@@ -23,3 +23,13 @@ ProofLink   string `json:"proof_link"`
 Status      string `json:"status"`
 Remarks     string `json:"remarks"`
 }
+type AssignAdminRequest struct {
+	UserID   int `json:"user_id"`
+	DomainID int `json:"domain_id"`
+}
+
+type Student struct {
+	ID    int    `json:"id"`
+	Name  string `json:"name"`
+	Email string `json:"email"`
+}
