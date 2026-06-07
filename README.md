@@ -10,10 +10,10 @@ PostgreSQL
 ## Milestones
 
 - [x] Create repository and project skeleton
-- [ ] Design database schema
-- [ ] Set up PostgreSQL
-- [ ] Implement authentication & authorization
-- [ ] Implement student workflow
+- [x] Design database schema
+- [x] Set up PostgreSQL
+- [x] Implement authentication & authorization
+- [x] Implement student workflow
 - [ ] Implement domain admin workflow
 - [ ] Implement master admin workflow
 - [ ] Generate PDF reports

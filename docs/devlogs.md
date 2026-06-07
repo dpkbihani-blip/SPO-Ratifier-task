@@ -17,3 +17,13 @@ signup frontend raw page done.
 first end to end feature finished :) 
 login and signup functionality done
 Project is starting to resemble a website :)
+
+DAY 4 
+06-06-2026
+student dashboard work
+backend for students and admins
+non function suddenly :(
+
+DAY 5 
+07-06-2026
+student dashboard done finally
