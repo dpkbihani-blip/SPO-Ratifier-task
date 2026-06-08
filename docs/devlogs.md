@@ -27,3 +27,13 @@ non function suddenly :(
 DAY 5 
 07-06-2026
 student dashboard done finally
+master admin and domain admin work in place
+
+DAY 6
+08-06-2026
+added local storage based session tracking for role
+frontend improvements
+Might try to host it before deadline today.
+
+PROJECT ENDS!!!
+I had fun.
