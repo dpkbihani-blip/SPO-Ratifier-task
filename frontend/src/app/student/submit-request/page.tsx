@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function SubmitRequestPage() {
   const [title, setTitle] = useState("");
@@ -13,6 +13,22 @@ export default function SubmitRequestPage() {
     process.env.NEXT_PUBLIC_API_URL ||
     "http://localhost:8080";
 
+useEffect(() => {
+
+  const role =
+    localStorage.getItem(
+      "role"
+    );
+
+  if (role !== "student") {
+
+    window.location.href =
+      "/login";
+
+  }
+
+}, []);
+
   async function submitRequest() {
     try {
       const response = await fetch(
@@ -24,7 +40,11 @@ export default function SubmitRequestPage() {
               "application/json",
           },
           body: JSON.stringify({
-            student_id: 1,
+            student_id: Number(
+            localStorage.getItem(
+            "user_id"
+            )
+            ),
             domain_id: Number(domainID),
             title,
             description,

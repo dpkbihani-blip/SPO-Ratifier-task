@@ -128,8 +128,15 @@ try {
 }
 
 useEffect(() => {
-loadStudents();
-loadRequests();
+  const role = localStorage.getItem("role");
+
+  if (role !== "master") {
+    window.location.href = "/login";
+    return;
+  }
+
+  loadStudents();
+  loadRequests();
 }, []);
 
 return ( <div className="min-h-screen bg-gray-100 p-8">
@@ -139,7 +146,23 @@ return ( <div className="min-h-screen bg-gray-100 p-8">
     <h1 className="text-4xl font-bold mb-6">
       Master Admin Dashboard
     </h1>
+    <div className="mb-6">
 
+  <button
+    onClick={() => {
+
+      localStorage.clear();
+
+      window.location.href =
+        "/login";
+
+    }}
+    className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+  >
+    Logout
+  </button>
+
+</div>
     <div className="bg-white rounded-lg shadow p-6">
 
       <h2 className="text-2xl font-semibold mb-4">

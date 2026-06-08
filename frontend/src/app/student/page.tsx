@@ -10,8 +10,23 @@ export default function StudentDashboard() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    loadDashboard();
-  }, []);
+
+  const role =
+    localStorage.getItem(
+      "role"
+    );
+
+  if (role !== "student") {
+
+    window.location.href =
+      "/login";
+
+    return;
+  }
+
+  loadDashboard();
+
+}, []);
 
   const API_URL =
   process.env.NEXT_PUBLIC_API_URL ||
@@ -21,9 +36,14 @@ export default function StudentDashboard() {
 
     try {
 
-      const response = await fetch(
-        `${API_URL}/student/dashboard?student_id=1`
-      );
+      const studentID =
+      localStorage.getItem(
+    "user_id"
+  );
+
+const response = await fetch(
+  `${API_URL}/student/dashboard?student_id=${studentID}`
+);
 
       const data = await response.json();
 
@@ -85,7 +105,7 @@ const totalRequests = requests.length;
         <h1 className="text-4xl font-bold mb-6">
           Student Dashboard
         </h1>
-
+        
         {/* Profile Card */}
 
         <div className="bg-white rounded-lg shadow p-6 mb-6">

@@ -37,11 +37,11 @@ func (s *Service) RegisterUser(
 func (s *Service) LoginUser(
 	email string,
 	password string,
-	) error {
+	) (int, string, error) {
 
 	user, err := s.Repo.GetUserByEmail(email)
 	if err != nil {
-		return err
+		return 0, "", err
 	}
 
 	err = bcrypt.CompareHashAndPassword(
@@ -50,8 +50,8 @@ func (s *Service) LoginUser(
 	)
 
 	if err != nil {
-		return err
+		return 0, "", err
 	}
 
-	return nil
+	return user.ID, user.Role, nil
 }

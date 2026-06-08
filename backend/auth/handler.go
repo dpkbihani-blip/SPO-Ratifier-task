@@ -11,6 +11,8 @@ type Handler struct {
 
 type MessageResponse struct {
 	Message string `json:"message"`
+	UserID  int    `json:"user_id"`
+	Role    string `json:"role"`
 }
 
 type SignupRequest struct {
@@ -67,26 +69,41 @@ func (h *Handler) Login(
 
 	err := json.NewDecoder(r.Body).Decode(&req)
 	if err != nil {
-		http.Error(w, "invalid request", http.StatusBadRequest)
+		http.Error(
+			w,
+			"invalid request",
+			http.StatusBadRequest,
+		)
 		return
 	}
 
-	err = h.Service.LoginUser(
-		req.Email,
-		req.Password,
-	)
+	userID, role, err :=
+		h.Service.LoginUser(
+			req.Email,
+			req.Password,
+		)
 
 	if err != nil {
-		http.Error(w, "invalid credentials", http.StatusUnauthorized)
+		http.Error(
+			w,
+			"invalid credentials",
+			http.StatusUnauthorized,
+		)
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set(
+		"Content-Type",
+		"application/json",
+	)
+
 	w.WriteHeader(http.StatusOK)
 
 	json.NewEncoder(w).Encode(
 		MessageResponse{
 			Message: "login successful",
+			UserID:  userID,
+			Role:    role,
 		},
 	)
 }
